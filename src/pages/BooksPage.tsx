@@ -19,6 +19,7 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
+import type { SelectChangeEvent } from "@mui/material/Select";
 import { Edit, Delete } from "@mui/icons-material";
 
 interface Book {
@@ -104,11 +105,22 @@ const BooksPage = () => {
     setForm({ title: "", author: "", category: "", isbn: "" });
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const name = e.target.name as string;
-    setForm({ ...form, [name]: e.target.value });
+    const { name, value } = event.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSelectChange = (event: SelectChangeEvent) => {
+    const { name, value } = event.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async () => {
@@ -218,7 +230,7 @@ const BooksPage = () => {
             label="Título"
             name="title"
             value={form.title}
-            onChange={handleChange}
+            onChange={handleInputChange}
             fullWidth
           />
           <FormControl margin="dense" fullWidth>
@@ -228,7 +240,7 @@ const BooksPage = () => {
               name="author"
               value={form.author}
               label="Autor"
-              onChange={handleChange}
+              onChange={handleSelectChange}
             >
               <MenuItem value="">
                 <em>Selecione</em>
@@ -247,7 +259,7 @@ const BooksPage = () => {
               name="category"
               value={form.category}
               label="Categoria"
-              onChange={handleChange}
+              onChange={handleSelectChange}
             >
               <MenuItem value="">
                 <em>Selecione</em>
@@ -264,7 +276,7 @@ const BooksPage = () => {
             label="ISBN"
             name="isbn"
             value={form.isbn}
-            onChange={handleChange}
+            onChange={handleInputChange}
             fullWidth
           />
           {formError && (
