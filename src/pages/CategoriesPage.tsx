@@ -36,7 +36,9 @@ const CategoriesPage = () => {
     setLoading(true);
     try {
       const res = await fetch(`${API_URL}/api/categories`);
-      const data = await res.json();
+      let data = await res.json();
+      // Ordena por ID crescente
+      data = data.sort((a: Category, b: Category) => a.id - b.id);
       setCategories(data);
     } catch (e) {
       setFormError("Erro ao buscar categorias.");
