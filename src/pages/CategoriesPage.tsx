@@ -30,11 +30,17 @@ const CategoriesPage = () => {
   const [form, setForm] = useState({ name: "" });
   const [formError, setFormError] = useState("");
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
   const fetchCategories = async () => {
     setLoading(true);
-    const res = await fetch("http://localhost:8080/api/categories");
-    const data = await res.json();
-    setCategories(data);
+    try {
+      const res = await fetch(`${API_URL}/api/categories`);
+      const data = await res.json();
+      setCategories(data);
+    } catch (e) {
+      setFormError("Erro ao buscar categorias.");
+    }
     setLoading(false);
   };
 
@@ -69,26 +75,35 @@ const CategoriesPage = () => {
       return;
     }
     setFormError("");
-    if (editingCategory) {
-      // Update
-      await fetch(
-        `http://localhost:8080/api/categories/${editingCategory.id}`,
-        {
-          method: "PUT",
+    try {
+      if (editingCategory) {
+        // Update
+        const res = await fetch(
+          `${API_URL}/api/categories/${editingCategory.id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(form),
+          }
+        );
+        if (!res.ok) throw new Error("Erro ao atualizar categoria");
+      } else {
+        // Create
+        const res = await fetch(`${API_URL}/api/categories`, {
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(form),
+        });
+        if (!res.ok) {
+          const err = await res.text();
+          throw new Error(err || "Erro ao criar categoria");
         }
-      );
-    } else {
-      // Create
-      await fetch("http://localhost:8080/api/categories", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+      }
+      handleClose();
+      fetchCategories();
+    } catch (e: any) {
+      setFormError(e.message || "Erro ao salvar categoria.");
     }
-    handleClose();
-    fetchCategories();
   };
 
   const handleDelete = async (id: number) => {

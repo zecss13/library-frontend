@@ -30,11 +30,17 @@ const AuthorsPage = () => {
   const [form, setForm] = useState({ name: "" });
   const [formError, setFormError] = useState("");
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
   const fetchAuthors = async () => {
     setLoading(true);
-    const res = await fetch("http://localhost:8080/api/authors");
-    const data = await res.json();
-    setAuthors(data);
+    try {
+      const res = await fetch(`${API_URL}/api/authors`);
+      const data = await res.json();
+      setAuthors(data);
+    } catch (e) {
+      setFormError("Erro ao buscar autores.");
+    }
     setLoading(false);
   };
 
@@ -69,23 +75,32 @@ const AuthorsPage = () => {
       return;
     }
     setFormError("");
-    if (editingAuthor) {
-      // Update
-      await fetch(`http://localhost:8080/api/authors/${editingAuthor.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-    } else {
-      // Create
-      await fetch("http://localhost:8080/api/authors", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
+    try {
+      if (editingAuthor) {
+        // Update
+        const res = await fetch(`${API_URL}/api/authors/${editingAuthor.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+        if (!res.ok) throw new Error("Erro ao atualizar autor");
+      } else {
+        // Create
+        const res = await fetch(`${API_URL}/api/authors`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+        if (!res.ok) {
+          const err = await res.text();
+          throw new Error(err || "Erro ao criar autor");
+        }
+      }
+      handleClose();
+      fetchAuthors();
+    } catch (e: any) {
+      setFormError(e.message || "Erro ao salvar autor.");
     }
-    handleClose();
-    fetchAuthors();
   };
 
   const handleDelete = async (id: number) => {
