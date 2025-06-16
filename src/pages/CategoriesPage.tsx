@@ -108,10 +108,18 @@ const CategoriesPage = () => {
   };
 
   const handleDelete = async (id: number) => {
-    await fetch(`${API_URL}/api/categories/${id}`, {
-      method: "DELETE",
-    });
-    fetchCategories();
+    try {
+      const res = await fetch(`${API_URL}/api/categories/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) {
+        const err = await res.text();
+        throw new Error(err || "Erro ao deletar categoria");
+      }
+      fetchCategories();
+    } catch (e: any) {
+      setFormError(e.message || "Erro ao deletar categoria.");
+    }
   };
 
   return (
