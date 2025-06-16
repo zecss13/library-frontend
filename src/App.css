@@ -1,0 +1,191 @@
+body {
+  background: url('/images/library-bg.jpg') no-repeat center center fixed, #f5ede3;
+  background-size: cover;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  color: #3e2c18;
+  margin: 0;
+}
+
+#root, .page-container {
+  background: rgba(255, 250, 240, 0.96);
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px 0 #bfa77a33;
+  text-align: left;
+}
+
+h2 {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2e4a32;
+  letter-spacing: 1px;
+}
+
+.card {
+  padding: 2em;
+  background: #f9f6f1;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px 0 #bfa77a22;
+  margin-bottom: 2rem;
+  border-left: 6px solid #bfa77a;
+}
+
+button, .MuiButton-root {
+  font-weight: 600;
+  border-radius: 8px !important;
+  text-transform: none !important;
+  box-shadow: none !important;
+  padding: 0.7em 2em !important;
+  margin: 0.5em 0.5em 0.5em 0 !important;
+  background: #7c5e3c !important;
+  color: #fff !important;
+  transition: background 0.2s;
+  min-width: 44px;
+  min-height: 44px;
+  font-size: 1.1rem;
+}
+button:focus, .MuiButton-root:focus {
+  outline: 3px solid #2e4a32 !important;
+  outline-offset: 2px;
+}
+button:hover, .MuiButton-root:hover {
+  background: #2e4a32 !important;
+}
+
+.MuiTableContainer-root {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px 0 #bfa77a22;
+  margin-bottom: 2rem;
+  background: #f9f6f1;
+  overflow-x: auto;
+}
+
+.MuiTableCell-head {
+  background: #e6d3b3 !important;
+  font-weight: 700 !important;
+  color: #2e4a32 !important;
+  font-size: 1.05rem !important;
+}
+
+.MuiTableCell-body {
+  font-size: 1rem !important;
+  color: #3e2c18 !important;
+}
+
+.MuiDialog-paper {
+  border-radius: 16px !important;
+  padding: 0.5em 1.5em !important;
+  background: #fffaf0 !important;
+}
+
+.MuiTextField-root, .MuiFormControl-root {
+  margin-bottom: 1.2em !important;
+}
+
+.MuiInputLabel-root {
+  font-size: 1rem !important;
+  color: #7c5e3c !important;
+}
+
+.MuiSelect-root, .MuiInputBase-root {
+  border-radius: 8px !important;
+  background: #f9f6f1 !important;
+}
+
+.MuiTableRow-root:hover {
+  background: #f5ede3 !important;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.page-container {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 2rem;
+  background: rgba(255, 250, 240, 0.96);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px 0 #bfa77a33;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Feedback visual para foco em campos de formulário */
+input:focus, select:focus, textarea:focus {
+  outline: none !important;
+  border-color: #2e4a32 !important;
+  box-shadow: 0 0 0 2px #bfa77a44;
+}
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #2e4a32 !important;
+  box-shadow: 0 0 0 2px #bfa77a44;
+}
+
+/* Mensagens de feedback */
+.form-feedback {
+  color: #b71c1c;
+  background: #fff3f3;
+  border: 1px solid #b71c1c44;
+  border-radius: 6px;
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Destaque para link ativo no menu */
+nav a {
+  color: #7c5e3c;
+  font-weight: 600;
+  padding: 0.5em 1em;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+nav a.active {
+  background: #e6d3b3;
+  color: #2e4a32;
+}
+nav a:focus {
+  outline: 2px solid #2e4a32;
+}
+nav a:hover {
+  background: #bfa77a;
+  color: #fff;
+}
+
+/* Tabela responsiva */
+@media (max-width: 900px) {
+  .MuiTableContainer-root, .page-container, #root {
+    max-width: 100vw;
+    padding: 0.5rem;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .MuiTableCell-root {
+    padding: 0.5em !important;
+    font-size: 0.95rem !important;
+  }
+  h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .MuiTableContainer-root {
+    overflow-x: auto;
+  }
+  .MuiTableCell-root {
+    min-width: 120px;
+  }
+  nav {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
