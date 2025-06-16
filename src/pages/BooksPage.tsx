@@ -177,7 +177,7 @@ const BooksPage = () => {
   };
 
   const handleDelete = async (id: number) => {
-    await fetch(`http://localhost:8080/api/books/${id}`, { method: "DELETE" });
+    await fetch(`${API_URL}/api/books/${id}`, { method: "DELETE" });
     fetchBooks();
   };
 

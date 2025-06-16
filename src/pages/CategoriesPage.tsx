@@ -37,9 +37,8 @@ const CategoriesPage = () => {
     try {
       const res = await fetch(`${API_URL}/api/categories`);
       let data = await res.json();
-      // Ordena por ID crescente
-      data = data.sort((a: Category, b: Category) => a.id - b.id);
-      setCategories(data);
+      // Garante que é array de Category e ordena por ID crescente
+      setCategories(Array.isArray(data) ? data.slice().sort((a, b) => a.id - b.id) : []);
     } catch (e) {
       setFormError("Erro ao buscar categorias.");
     }
@@ -109,7 +108,7 @@ const CategoriesPage = () => {
   };
 
   const handleDelete = async (id: number) => {
-    await fetch(`http://localhost:8080/api/categories/${id}`, {
+    await fetch(`${API_URL}/api/categories/${id}`, {
       method: "DELETE",
     });
     fetchCategories();

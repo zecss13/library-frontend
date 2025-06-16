@@ -104,7 +104,7 @@ const AuthorsPage = () => {
   };
 
   const handleDelete = async (id: number) => {
-    await fetch(`http://localhost:8080/api/authors/${id}`, {
+    await fetch(`${API_URL}/api/authors/${id}`, {
       method: "DELETE",
     });
     fetchAuthors();
