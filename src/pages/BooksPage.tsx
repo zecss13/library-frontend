@@ -54,25 +54,38 @@ const BooksPage = () => {
   const [authors, setAuthors] = useState<Author[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
 
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
   const fetchBooks = async () => {
     setLoading(true);
-    const res = await fetch("http://localhost:8080/api/books");
-    const data = await res.json();
-    console.log(data);
-    setBooks(data);
+    try {
+      const res = await fetch(`${API_URL}/api/books`);
+      const data = await res.json();
+      setBooks(data);
+    } catch (e) {
+      setFormError("Erro ao buscar livros.");
+    }
     setLoading(false);
   };
 
   const fetchAuthors = async () => {
-    const res = await fetch("http://localhost:8080/api/authors");
-    const data = await res.json();
-    setAuthors(data);
+    try {
+      const res = await fetch(`${API_URL}/api/authors`);
+      const data = await res.json();
+      setAuthors(data);
+    } catch (e) {
+      setFormError("Erro ao buscar autores.");
+    }
   };
 
   const fetchCategories = async () => {
-    const res = await fetch("http://localhost:8080/api/categories");
-    const data = await res.json();
-    setCategories(data);
+    try {
+      const res = await fetch(`${API_URL}/api/categories`);
+      const data = await res.json();
+      setCategories(data);
+    } catch (e) {
+      setFormError("Erro ao buscar categorias.");
+    }
   };
 
   useEffect(() => {
@@ -135,26 +148,32 @@ const BooksPage = () => {
       categoryId: Number(form.category),
       isbn: form.isbn,
     };
-    console.log(payload);
-    if (editingBook) {
-      // Update
-      await fetch(`http://localhost:8080/api/books/${editingBook.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-    } else {
-      // Create
-      const res = await fetch("http://localhost:8080/api/books", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      console.log(data);
+    try {
+      if (editingBook) {
+        // Update
+        const res = await fetch(`${API_URL}/api/books/${editingBook.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error("Erro ao atualizar livro");
+      } else {
+        // Create
+        const res = await fetch(`${API_URL}/api/books`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) {
+          const err = await res.text();
+          throw new Error(err || "Erro ao criar livro");
+        }
+      }
+      handleClose();
+      fetchBooks();
+    } catch (e: any) {
+      setFormError(e.message || "Erro ao salvar livro.");
     }
-    handleClose();
-    fetchBooks();
   };
 
   const handleDelete = async (id: number) => {
